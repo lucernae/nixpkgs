@@ -204,9 +204,11 @@ in {
 
   aioambient = callPackage ../development/python-modules/aioambient { };
 
+  ailment = callPackage ../development/python-modules/ailment { };
+
   aioamqp = callPackage ../development/python-modules/aioamqp { };
 
-  ailment = callPackage ../development/python-modules/ailment { };
+  aioasuswrt = callPackage ../development/python-modules/aioasuswrt { };
 
   aiocoap = callPackage ../development/python-modules/aiocoap { };
 
@@ -1707,6 +1709,8 @@ in {
   descartes = callPackage ../development/python-modules/descartes { };
 
   deskcon = callPackage ../development/python-modules/deskcon { };
+
+  desktop-notifier = callPackage ../development/python-modules/desktop-notifier { };
 
   detox = throw "detox is no longer maintained, and was broken since may 2019"; # added 2020-07-04
 
@@ -3517,6 +3521,12 @@ in {
 
   kitchen = callPackage ../development/python-modules/kitchen { };
 
+  kivy = callPackage ../development/python-modules/kivy {
+    inherit (pkgs) mesa;
+  };
+
+  kivy-garden = callPackage ../development/python-modules/kivy-garden { };
+
   kiwisolver = if isPy3k then
     callPackage ../development/python-modules/kiwisolver { }
   else
@@ -3547,6 +3557,8 @@ in {
   kubernetes = callPackage ../development/python-modules/kubernetes { };
 
   labelbox = callPackage ../development/python-modules/labelbox { };
+
+  labgrid = callPackage ../development/python-modules/labgrid { };
 
   lammps-cython = callPackage ../development/python-modules/lammps-cython { mpi = pkgs.mpi; };
 
@@ -3694,6 +3706,8 @@ in {
 
   librosa = callPackage ../development/python-modules/librosa { };
 
+  librouteros = callPackage ../development/python-modules/librouteros { };
+
   libsass = (callPackage ../development/python-modules/libsass { inherit (pkgs) libsass; });
 
   libsavitar = callPackage ../development/python-modules/libsavitar { };
@@ -3745,7 +3759,7 @@ in {
 
   libxslt = (toPythonModule (pkgs.libxslt.override {
     pythonSupport = true;
-    inherit python;
+    python3 = python;
     inherit (self) libxml2;
   })).py;
 
@@ -3870,20 +3884,11 @@ in {
   macropy = callPackage ../development/python-modules/macropy { };
 
   maestral = callPackage ../development/python-modules/maestral {
-
-    # https://github.com/SamSchott/maestral/issues/250#issuecomment-739510048
-    survey = self.survey.overridePythonAttrs (old: rec {
-      version = "2.2.1";
+    keyring = self.keyring.overridePythonAttrs (old: rec {
+      version = "22.0.1";
       src = old.src.override {
         inherit version;
-        sha256 = "sha256-7ubWkqk1vyaJDLMOuKwUx2Bjziyi3HqpaQq4pKp4Z+0=";
-      };
-    });
-    watchdog = self.watchdog.overridePythonAttrs (old: rec {
-      version = "0.10.3";
-      src = old.src.override {
-        inherit version;
-        sha256 = "4214e1379d128b0588021880ccaf40317ee156d4603ac388b9adcf29165e0c04";
+        sha256 = "sha256-mss+FFLtu3VEgisS/SVFkHh2nlYPpR9Bi20Ar6pheN8=";
       };
     });
   };
@@ -4885,8 +4890,13 @@ in {
   else
     callPackage ../development/python-modules/pillow {
       inherit (pkgs) freetype libjpeg zlib libtiff libwebp tcl lcms2 tk;
-      inherit (pkgs.xorg) libX11;
+      inherit (pkgs.xorg) libX11 libxcb;
     };
+
+  pillow-simd = callPackage ../development/python-modules/pillow-simd {
+      inherit (pkgs) freetype libjpeg zlib libtiff libwebp tcl lcms2 tk;
+      inherit (pkgs.xorg) libX11;
+  };
 
   pims = callPackage ../development/python-modules/pims { };
 
@@ -5399,6 +5409,8 @@ in {
   pyedimax = callPackage ../development/python-modules/pyedimax { };
 
   pyee = callPackage ../development/python-modules/pyee { };
+
+  pyeight = callPackage ../development/python-modules/pyeight { };
 
   pyelftools = callPackage ../development/python-modules/pyelftools { };
 
@@ -6163,6 +6175,8 @@ in {
 
   pytest-httpserver = callPackage ../development/python-modules/pytest-httpserver { };
 
+  pytest-httpx = callPackage ../development/python-modules/pytest-httpx { };
+
   pytest-instafail = callPackage ../development/python-modules/pytest-instafail { };
 
   pytest-isort = callPackage ../development/python-modules/pytest-isort { };
@@ -6311,6 +6325,8 @@ in {
 
   python-engineio = callPackage ../development/python-modules/python-engineio { };
 
+  python-engineio_3 = callPackage ../development/python-modules/python-engineio/3.nix { };
+
   python-etcd = callPackage ../development/python-modules/python-etcd { };
 
   python_fedora = callPackage ../development/python-modules/python_fedora { };
@@ -6451,6 +6467,8 @@ in {
 
   python-socketio = callPackage ../development/python-modules/python-socketio { };
 
+  python-socketio_4 = callPackage ../development/python-modules/python-socketio/4.nix { };
+
   python-sql = callPackage ../development/python-modules/python-sql { };
 
   python_statsd = callPackage ../development/python-modules/python_statsd { };
@@ -6501,9 +6519,7 @@ in {
 
   pytorch = callPackage ../development/python-modules/pytorch { cudaSupport = pkgs.config.cudaSupport or false; };
 
-  pytorch-bin = callPackage ../development/python-modules/pytorch/bin.nix {
-    inherit (pkgs.linuxPackages) nvidia_x11;
-  };
+  pytorch-bin = callPackage ../development/python-modules/pytorch/bin.nix { };
 
   pytorch-lightning = callPackage ../development/python-modules/pytorch-lightning { };
 
@@ -7923,7 +7939,9 @@ in {
 
   translationstring = callPackage ../development/python-modules/translationstring { };
 
-  transmissionrpc = callPackage ../development/python-modules/transmissionrpc { };
+  transmission-rpc = callPackage ../development/python-modules/transmission-rpc { };
+
+  transmissionrpc = self.transmission-rpc; # alias for compatibility 2020-02-07
 
   treq = callPackage ../development/python-modules/treq { };
 
