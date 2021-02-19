@@ -6980,6 +6980,7 @@ broken-packages:
   - iban
   - ical
   - iCalendar
+  - ice40-prim
   - IcoGrid
   - iconv-typed
   - ide-backend
